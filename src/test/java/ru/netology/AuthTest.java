@@ -2,6 +2,7 @@ package ru.netology;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import static ru.netology.DataGenerator.Registration.getUser;
 
 import static ru.netology.DataGenerator.getRandomLogin;
 import static ru.netology.DataGenerator.getRandomPassword;
-
 
 class AuthTest {
 
@@ -55,7 +55,7 @@ class AuthTest {
         $("[data-test-id='password'] input").setValue(blockedUser.getPassword());
         $(byText("Продолжить")).click();
         $("[data-test-id='error-notification']").
-                should(matchText("Ошибка! Неверно указан логин или пароль"), Duration.ofSeconds(15));
+                should(matchText("Ошибка! Пользователь заблокирован"), Duration.ofSeconds(15));
     }
 
     @Test
@@ -66,7 +66,8 @@ class AuthTest {
         $("[data-test-id='login'] input").setValue(wrongLogin);
         $("[data-test-id='password'] input").setValue(registeredUser.getPassword());
         $(byText("Продолжить")).click();
-        $x("//div[text()=\"Ошибка\"]").should(Condition.visible);
+        $("[data-test-id='error-notification']").
+                should(matchText("Ошибка! Неверно указан логин или пароль"), Duration.ofSeconds(15));
     }
 
     @Test
@@ -77,7 +78,8 @@ class AuthTest {
         $("[data-test-id='login'] input").setValue(registeredUser.getLogin());
         $("[data-test-id='password'] input").setValue(wrongPassword);
         $(byText("Продолжить")).click();
-        $x("//div[text()=\"Ошибка\"]").should(Condition.visible);
+        $("[data-test-id='error-notification']").
+                should(matchText("Ошибка! Неверно указан логин или пароль"), Duration.ofSeconds(15));
     }
 }
 
